@@ -5,7 +5,7 @@ namespace Catalog.Api.Domain
     public class Product : BaseEntity
     {
 
-        public Product(int id, string sku,string title, decimal? price = 0M)
+        public Product(string id, string sku,string title, decimal? price = 0M)
         {
             this.Id = id;
             this.Sku = sku;
@@ -65,6 +65,8 @@ namespace Catalog.Api.Domain
 
 
 
+        public string Category { get; set; }
+
 
 
 
@@ -87,7 +89,7 @@ namespace Catalog.Api.Domain
         {
             this.Deleted = true;
             this.Active = false;
-            this.DeleteDate = DateTime.UtcNow;
+            this.DeleteAt = DateTime.UtcNow;
         }
     }
 }

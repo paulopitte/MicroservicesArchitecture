@@ -6,12 +6,12 @@ namespace Catalog.Api.Domain.Base
     {
 
         /// <summary>
-        /// Identificador do produto no hub.
+        /// Identificador do produto.
         /// </summary>
 
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public int Id { get; protected set; }
+        public string Id { get; protected set; }
 
 
 
