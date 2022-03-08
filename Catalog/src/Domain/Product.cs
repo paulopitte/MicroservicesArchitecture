@@ -5,9 +5,9 @@ namespace Catalog.Api.Domain
     public class Product : BaseEntity
     {
 
-        public Product(string id, string sku,string title, decimal? price = 0M)
+        public Product( string sku,string title, decimal? price = 0M)
         {
-            this.Id = id;
+            this.Id = Guid.NewGuid().ToString();
             this.Sku = sku;
             this.Title = title;
             this.Price = price;
@@ -33,15 +33,15 @@ namespace Catalog.Api.Domain
         /// </summary>
         public decimal? Price { get;  }
 
-        /// <summary>
-        /// Descrição do produto.
-        /// </summary>
-        public string Description { get; private set; }
+        ///// <summary>
+        ///// Descrição do produto.
+        ///// </summary>
+        //public string Description { get; private set; }
 
-        /// <summary>
-        /// Descrição abreviada do produto.
-        /// </summary>
-        public string ShortDescription { get; private set; }
+        ///// <summary>
+        ///// Descrição abreviada do produto.
+        ///// </summary>
+        //public string ShortDescription { get; private set; }
 
 
 

@@ -16,9 +16,9 @@ namespace Catalog.Api.Repository
         private static IEnumerable<Product> GetProducts()
         {
             var prod = new List<Product>();
-            prod.Add(new Product(new Random().Next(), "SKU_123", "IPhone 13", 12346.99M));
-            prod.Add(new Product(new Random().Next(), "SKU_456", "IPhone 15", 22346.99M));
-            prod.Add(new Product(new Random().Next(), "SKU_789", "IPhone 18", 32346.99M));
+            prod.Add(new Product( "SKU_123", "IPhone 13", 12346.99M));
+            prod.Add(new Product( "SKU_456", "IPhone 15", 22346.99M));
+            prod.Add(new Product( "SKU_789", "IPhone 18", 32346.99M));
 
             return prod;
         }

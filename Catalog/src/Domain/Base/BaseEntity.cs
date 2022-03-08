@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Catalog.Api.Domain.Base
 {
@@ -10,7 +11,6 @@ namespace Catalog.Api.Domain.Base
         /// </summary>
 
         [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string Id { get; protected set; }
 
 

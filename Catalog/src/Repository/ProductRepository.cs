@@ -8,9 +8,10 @@ namespace Catalog.Api.Repository
         Task<IEnumerable<Product>> GetProducts();
         Task<IEnumerable<Product>> GetProductsByTitle(string title);
         Task<IEnumerable<Product>> GetProductsByCategory(string name);
+        Task<Product> GetBySkuAsync(string sku);
         Task<Product> GetProduct(string id);
 
-        Task Create(Product product);
+        Task CreateAsync(Product product);
         Task<bool> Update(Product product);
 
         Task<bool> Delete(string id);
@@ -27,7 +28,7 @@ namespace Catalog.Api.Repository
                 throw new ArgumentException(nameof(context));
         }
 
-        public async Task Create(Product product) =>
+        public async Task CreateAsync(Product product) =>
             await _context.Products
                   .InsertOneAsync(product)
                   .ConfigureAwait(false);
@@ -42,6 +43,10 @@ namespace Catalog.Api.Repository
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
+        public async Task<Product> GetBySkuAsync(string sku)
+        {
+            return await _context.Products.Find(p => p.Sku == sku).FirstOrDefaultAsync();
+        }
 
         public async Task<Product> GetProduct(string id) =>
             await _context.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
@@ -68,7 +73,7 @@ namespace Catalog.Api.Repository
 
         public async Task<bool> Update(Product product)
         {
-            var updateResult = await _context.Products.ReplaceOneAsync(filterg => g.Id == product.Id, replacement: product);
+            var updateResult = await _context.Products.ReplaceOneAsync(filter: g => g.Id == product.Id, replacement: product);
 
             return updateResult.IsAcknowledged
                 && updateResult.ModifiedCount > 0;
