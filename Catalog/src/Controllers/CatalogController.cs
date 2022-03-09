@@ -1,6 +1,6 @@
 ﻿using Catalog.Api.Domain;
 using Catalog.Api.Repository;
-using Catalog.Api.Responses;
+using Core.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 

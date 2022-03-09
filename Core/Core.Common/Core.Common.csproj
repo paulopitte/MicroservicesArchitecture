@@ -1,9 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AssemblyName>Core.Common</AssemblyName>
+		<RootNamespace>Core.Common</RootNamespace>
+		<Title>Core.Common</Title>
+		<Authors>Paulo Pitte - paulopitte@gmail.com</Authors>
+		<Company>Paulo Pitte - paulopitte@gmail.com</Company>
+		<RepositoryType>Public</RepositoryType>
+		<Version>1.0.1</Version>
+		<Description>
+			Provides a standard event bus implementation used to communicate event messages across multiple independent services is a set of common implementations to help you implementing DDD, CQRS, Jwt, claims validation and another facilities
+		</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+	</ItemGroup>
 
 </Project>
