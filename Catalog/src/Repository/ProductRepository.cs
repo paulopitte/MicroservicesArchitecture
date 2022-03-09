@@ -11,9 +11,10 @@ namespace Catalog.Api.Repository
         Task<Product> GetBySkuAsync(string sku);
         Task<Product> GetProductAsync(string id);
 
-        Task CreateAsync(Product product);
+        Task SaveAsync(Product product);
         Task<bool> UpdateAsync(Product product);
         Task<bool> DeleteAsync(string id);
+        Task<bool> CheckExistsAsync(string sku);
     }
 
     public class ProductRepository : IProductRepository
@@ -27,7 +28,7 @@ namespace Catalog.Api.Repository
                 throw new ArgumentException(nameof(context));
         }
 
-        public async Task CreateAsync(Product product) =>
+        public async Task SaveAsync(Product product) =>
             await _context.Products
                   .InsertOneAsync(product)
                   .ConfigureAwait(false);
@@ -77,6 +78,12 @@ namespace Catalog.Api.Repository
         {
             FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Title, title);
             return await _context.Products.Find(filter).ToListAsync();
+        }
+
+        public async Task<bool> CheckExistsAsync(string sku)          
+        {
+            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Sku, sku);
+                return await _context.Products.CountAsync(filter) > 0;
         }
     }
 

@@ -1,7 +1,9 @@
 ﻿using Catalog.Api.Application.Mappings;
+using Catalog.Api.Core.Application.Products.Handlers;
 using Catalog.Api.Repository;
 using Core.Common.Extensions;
 using Core.Common.Models;
+using MediatR;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
 using System.IO.Compression;
@@ -24,6 +26,8 @@ namespace Catalog.Api.Extensions
             var appSettingsSection = configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection)
                 .AddScoped(cfg => cfg.GetService<IOptionsSnapshot<AppSettings>>().Value);
+
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidateCommandHandler<,>));
 
 
 

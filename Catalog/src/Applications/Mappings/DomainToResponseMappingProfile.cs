@@ -1,8 +1,8 @@
-﻿namespace Catalog.Api.Application.Mappings
-{
-    using Request = Core.Contracts.Requests;
-    using AutoMapper;
+﻿using AutoMapper;
+using Request =  Core.Contracts.Requests;
 
+namespace Catalog.Api.Application.Mappings
+{
     public class DomainToResponseMappingProfile : Profile
     {
 

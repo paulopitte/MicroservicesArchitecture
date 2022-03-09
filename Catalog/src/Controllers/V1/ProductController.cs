@@ -106,7 +106,7 @@ namespace Catalog.Api.Controllers.V1
 
             var product = _mapper.Map<Domain.Product>(request);
 
-            await _productRepository.CreateAsync(product).ConfigureAwait(false);
+            await _productRepository.SaveAsync(product).ConfigureAwait(false);
 
             return CreatedAtRoute("GetBySku", new { sku = product.Sku }, product);
 

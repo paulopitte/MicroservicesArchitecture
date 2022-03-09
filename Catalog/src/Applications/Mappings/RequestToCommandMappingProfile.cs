@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Request = Core.Contracts.Requests;
 
 namespace Catalog.Api.Application.Mappings
 {
-    using Request = Core.Contracts.Requests;
-
+ 
     public class RequestToCommandMappingProfile : Profile
     {
         public RequestToCommandMappingProfile()

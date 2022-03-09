@@ -1,7 +1,9 @@
 ﻿
+using Core.Common.Messaging;
+
 namespace Core.Common.Notifications
 {
-    public class DomainNotification //: Event
+    public class DomainNotification : Event
     {
         public Guid DomainNotificationId { get; private set; }
         public string Key { get; private set; }
