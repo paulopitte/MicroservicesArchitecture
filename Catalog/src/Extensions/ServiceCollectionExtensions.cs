@@ -1,5 +1,6 @@
 ﻿using Catalog.Api.Application.Mappings;
 using Catalog.Api.Core.Application.Products.Handlers;
+using Catalog.Api.Core.Application.Products.Services;
 using Catalog.Api.Repository;
 using Core.Common.Extensions;
 using Core.Common.Models;
@@ -14,6 +15,8 @@ namespace Catalog.Api.Extensions
     {
         public static IServiceCollection AddBusinessServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICatalogContext, CatalogContext>();
             services.AddScoped<IProductRepository, ProductRepository>();
             return services;
         }
@@ -28,6 +31,10 @@ namespace Catalog.Api.Extensions
                 .AddScoped(cfg => cfg.GetService<IOptionsSnapshot<AppSettings>>().Value);
 
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidateCommandHandler<,>));
+
+
+            var myhandlers = AppDomain.CurrentDomain.Load("Catalog.Api");
+            services.AddMediatR(myhandlers);
 
 
 
@@ -54,7 +61,6 @@ namespace Catalog.Api.Extensions
             });
 
 
-            services.AddScoped<ICatalogContext, CatalogContext>();
             return services;
         }
 

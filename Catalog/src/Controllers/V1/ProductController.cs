@@ -5,6 +5,7 @@ using Core.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using Domain = Catalog.Api.Domain;
+using Catalog.Api.Core.Application.Products.Services;
 
 namespace Catalog.Api.Controllers.V1
 {
@@ -15,19 +16,16 @@ namespace Catalog.Api.Controllers.V1
     [Produces("application/json")]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
-    public class ProductController : ControllerBase // BaseController
+    public class ProductController : BaseController
     {
 
-        private readonly IProductRepository _productRepository;
-        private readonly IMapper _mapper;
+        private readonly IProductService _productService ;
+      
 
-        public ProductController(IProductRepository productRepository, IMapper mapper)
+        public ProductController(IProductService productService)
         {
-            this._productRepository = productRepository ??
-                throw new ArgumentNullException(nameof(productRepository));
-
-            _mapper = mapper;
-
+            this._productService = productService ??
+                throw new ArgumentNullException(nameof(productService));          
         }
 
 
@@ -51,11 +49,21 @@ namespace Catalog.Api.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBySku(string sku)
         {
-            var produto = await _productRepository.GetBySkuAsync(sku);
-            if (produto is null)
+         //   var produto = await _productService.GetBySkuAsync(sku);
+            var product = await _productService.GetBySkuAsync(sku);
+            if (product is null)
                 return NotFound("Product not found");
-            return Ok(produto);
+            return Ok(product);
         }
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Obtem um Producto pela pesquisa de Categoria
@@ -75,7 +83,7 @@ namespace Catalog.Api.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetByCategory(string category)
         {
-            var product = await _productRepository.GetProductsByCategoryAsync(category);
+            var product = await _productService.GetProductsByCategoryAsync(category);
             if (product is null)
                 return NotFound("Product not found");
             return Ok(product);
@@ -104,14 +112,16 @@ namespace Catalog.Api.Controllers.V1
             if (request is null)
                 return BadRequest("Invalid Product Request.");
 
-            var product = _mapper.Map<Domain.Product>(request);
-
-            await _productRepository.SaveAsync(product).ConfigureAwait(false);
-
-            return CreatedAtRoute("GetBySku", new { sku = product.Sku }, product);
+            await _productService.SaveAsync(request, GetChannelId(), CreateHeaderDefault()).ConfigureAwait(false);
+            return CreatedAtRoute("GetBySku", new { sku = request.Sku }, request);
 
             //return !ModelState.IsValid ? BadRequest(ModelState) : Created("",null);
         }
+
+
+
+
+
 
 
         /// <summary>
@@ -129,12 +139,14 @@ namespace Catalog.Api.Controllers.V1
         public async Task<IActionResult> Update([FromBody] Request.Product request)
         {
             if (request is null)
-                return BadRequest("Invalid Product Request.");
+                return BadRequest("Invalid Product Request.");            
 
-            var product = _mapper.Map<Domain.Product>(request);
-
-            return Ok(await _productRepository.UpdateAsync(product));
+            return Ok(await _productService.UpdateAsync(request, GetChannelId(), CreateHeaderDefault()));
         }
+
+
+
+
 
 
 
@@ -156,8 +168,14 @@ namespace Catalog.Api.Controllers.V1
         {
             if (id is null)
                 return BadRequest("Invalid Product Request.");
-            return Ok(await _productRepository.DeleteAsync(id));
+            return Ok(await _productService.DeleteAsync(id, GetChannelId(), CreateHeaderDefault()));
         }
+
+
+
+
+
+
 
     }
 }

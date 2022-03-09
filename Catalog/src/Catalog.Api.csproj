@@ -41,7 +41,6 @@
 
 	<ItemGroup>
 		<Folder Include="Domain\Interfaces\" />
-		<Folder Include="Applications\Products\Services\" />
 	</ItemGroup>
 
 	<ItemGroup>
