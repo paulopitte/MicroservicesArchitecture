@@ -5,11 +5,11 @@ namespace Catalog.Api.Repository
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetProducts();
+        Task<IEnumerable<Product>> GetProductsAsync();
         Task<IEnumerable<Product>> GetProductsByTitle(string title);
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(string name);
         Task<Product> GetBySkuAsync(string sku);
-        Task<Product> GetProduct(string id);
+        Task<Product> GetProductAsync(string id);
 
         Task CreateAsync(Product product);
         Task<bool> UpdateAsync(Product product);
@@ -33,7 +33,6 @@ namespace Catalog.Api.Repository
                   .InsertOneAsync(product)
                   .ConfigureAwait(false);
 
-
         public async Task<bool> DeleteAsync(string id)
         {
             FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Id, id);
@@ -42,34 +41,7 @@ namespace Catalog.Api.Repository
 
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
-
-        public async Task<Product> GetBySkuAsync(string sku)
-        {
-            return await _context.Products.Find(p => p.Sku == sku).FirstOrDefaultAsync();
-        }
-
-        public async Task<Product> GetProduct(string id) =>
-            await _context.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
-
-
-        public async Task<IEnumerable<Product>> GetProducts() =>
-             await _context.Products
-                                .Find(prop => true)
-                                .ToListAsync();
-
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string name)
-        {
-            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Category, name);
-
-            return await _context.Products.Find(filter).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Product>> GetProductsByTitle(string title)
-        {
-            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Title, title);
-
-            return await _context.Products.Find(filter).ToListAsync();
-        }
+     
 
         public async Task<bool> UpdateAsync(Product product)
         {
@@ -77,6 +49,35 @@ namespace Catalog.Api.Repository
 
             return updateResult.IsAcknowledged
                 && updateResult.ModifiedCount > 0;
+        }
+
+
+
+
+
+        public async Task<Product> GetBySkuAsync(string sku) =>
+         await _context.Products.Find(p => p.Sku == sku).FirstOrDefaultAsync();
+
+
+        public async Task<Product> GetProductAsync(string id) =>
+            await _context.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
+
+
+        public async Task<IEnumerable<Product>> GetProductsAsync() =>
+             await _context.Products
+                                .Find(prop => true)
+                                .ToListAsync();
+
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string name)
+        {
+            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Category, name);
+            return await _context.Products.Find(filter).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByTitle(string title)
+        {
+            FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Title, title);
+            return await _context.Products.Find(filter).ToListAsync();
         }
     }
 

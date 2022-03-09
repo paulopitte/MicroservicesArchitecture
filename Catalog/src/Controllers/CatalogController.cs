@@ -145,7 +145,6 @@ namespace Catalog.Api.Controllers
         {
             if (id is null)
                 return BadRequest("Invalid Product Request.");
-
             return Ok(await _productRepository.DeleteAsync(id));
         }
 
