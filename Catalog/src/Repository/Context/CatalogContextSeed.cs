@@ -9,7 +9,7 @@ namespace Catalog.Api.Repository
         {
             bool existProduct = productCollection.Find(p => true).Any();
 
-            if (existProduct)
+            if (!existProduct)
                 productCollection.InsertManyAsync(GetProducts());
         }
 

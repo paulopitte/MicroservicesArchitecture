@@ -7,14 +7,14 @@ namespace Catalog.Api.Repository
     {
         Task<IEnumerable<Product>> GetProducts();
         Task<IEnumerable<Product>> GetProductsByTitle(string title);
-        Task<IEnumerable<Product>> GetProductsByCategory(string name);
+        Task<IEnumerable<Product>> GetProductsByCategoryAsync(string name);
         Task<Product> GetBySkuAsync(string sku);
         Task<Product> GetProduct(string id);
 
         Task CreateAsync(Product product);
-        Task<bool> Update(Product product);
+        Task<bool> UpdateAsync(Product product);
 
-        Task<bool> Delete(string id);
+        Task<bool> DeleteAsync(string id);
     }
 
     public class ProductRepository : IProductRepository
@@ -34,7 +34,7 @@ namespace Catalog.Api.Repository
                   .ConfigureAwait(false);
 
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
             FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Id, id);
 
@@ -57,7 +57,7 @@ namespace Catalog.Api.Repository
                                 .Find(prop => true)
                                 .ToListAsync();
 
-        public async Task<IEnumerable<Product>> GetProductsByCategory(string name)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string name)
         {
             FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Category, name);
 
@@ -71,7 +71,7 @@ namespace Catalog.Api.Repository
             return await _context.Products.Find(filter).ToListAsync();
         }
 
-        public async Task<bool> Update(Product product)
+        public async Task<bool> UpdateAsync(Product product)
         {
             var updateResult = await _context.Products.ReplaceOneAsync(filter: g => g.Id == product.Id, replacement: product);
 
