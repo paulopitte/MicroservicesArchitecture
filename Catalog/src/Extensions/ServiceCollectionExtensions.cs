@@ -1,7 +1,9 @@
 ﻿using Catalog.Api.Mappings;
 using Catalog.Api.Repository;
 using Core.Common.Extensions;
+using Core.Common.Models;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Options;
 using System.IO.Compression;
 
 namespace Catalog.Api.Extensions
@@ -17,6 +19,12 @@ namespace Catalog.Api.Extensions
         public static IServiceCollection AddInfrastructureAPI(this IServiceCollection services, IConfiguration configuration)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+
+            //// DISPONIBILIZA O "APPSETTINGS" (LIDO DO ARQUIVO DE CONFIGURAÇÕES)
+            var appSettingsSection = configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection)
+                .AddScoped(cfg => cfg.GetService<IOptionsSnapshot<AppSettings>>().Value);
+
 
 
             //Ops: Necessario para leitura das configurações

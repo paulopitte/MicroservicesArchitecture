@@ -13,10 +13,14 @@ using System.Text;
 
 namespace Core.Common.Extensions
 {
+    using Core.Common.App;
     using Models;
 
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddApplicationEvents(this IServiceCollection services) =>
+            services.AddSingleton<IApplicationEvents, ApplicationEvents>();
+
         //public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
         //{
         //    var redisOptions = new CacheOptions();
@@ -195,7 +199,7 @@ namespace Core.Common.Extensions
                 foreach (var description in _provider.ApiVersionDescriptions)
                 {
                     options.SwaggerDoc(
-                        description.GroupName, 
+                        description.GroupName,
                         CreateApiInfo(description));
                 }
             }
@@ -208,7 +212,7 @@ namespace Core.Common.Extensions
                     Title = "Exemplo microservices - API",
                     License = new OpenApiLicense
                     {
-                        Name = "Paulo Pitte" ,
+                        Name = "Paulo Pitte",
                         Url = new Uri("https://paulopitte.io")
                     },
                     Version = description.ApiVersion.ToString(),
