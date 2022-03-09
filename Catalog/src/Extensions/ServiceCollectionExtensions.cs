@@ -1,4 +1,4 @@
-﻿using Catalog.Api.Mappings;
+﻿using Catalog.Api.Application.Mappings;
 using Catalog.Api.Repository;
 using Core.Common.Extensions;
 using Core.Common.Models;

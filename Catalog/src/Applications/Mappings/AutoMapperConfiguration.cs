@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Catalog.Api.Mappings
+namespace Catalog.Api.Application.Mappings
 {
     public class AutoMapperConfiguration
     {

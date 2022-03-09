@@ -43,8 +43,6 @@
 		<Folder Include="Applications\Products\Queries\" />
 		<Folder Include="Applications\Products\Validations\" />
 		<Folder Include="Applications\Products\Services\" />
-		<Folder Include="Applications\" />
-		<Folder Include="Services\" />
 	</ItemGroup>
 
 	<ItemGroup>

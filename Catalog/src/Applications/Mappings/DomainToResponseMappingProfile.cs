@@ -1,4 +1,4 @@
-﻿namespace Catalog.Api.Mappings
+﻿namespace Catalog.Api.Application.Mappings
 {
     using Request = Core.Contracts.Requests;
     using AutoMapper;
