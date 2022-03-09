@@ -4,14 +4,16 @@ namespace Catalog.Api.Domain
 {
     public class Product : BaseEntity
     {
+        private const int UTC = -3;
 
-        public Product( string sku,string title, decimal? price = 0M)
+        public Product(string sku, string title, decimal? price = 0M)
         {
             this.Id = Guid.NewGuid().ToString();
             this.Sku = sku;
             this.Title = title;
             this.Price = price;
-            Actived();
+            this.CreatedAt = DateTime.UtcNow.AddDays(UTC);
+            this.Active = true;
         }
 
 
@@ -27,11 +29,11 @@ namespace Catalog.Api.Domain
         /// Título do produto.
         /// </summary>
         public string Title { get; private set; }
-        
+
         /// <summary>
         /// Representa um preço do produto
         /// </summary>
-        public decimal? Price { get;  }
+        public decimal? Price { get; }
 
         ///// <summary>
         ///// Descrição do produto.
@@ -51,15 +53,15 @@ namespace Catalog.Api.Domain
 		/// </summary>
 		public int? Stock { get; private set; }
 
-        /// <summary>
-        /// Quantidade mínima do estoque do produto para possibilitar venda.
-        /// </summary>
-        public int? StockMinimum { get; private set; }
+        ///// <summary>
+        ///// Quantidade mínima do estoque do produto para possibilitar venda.
+        ///// </summary>
+        //public int? StockMinimum { get; private set; }
 
-        /// <summary>
-        /// Quantidade do produto disponível através de estoque externo.
-        /// </summary>
-        public int? StockExternal { get; private set; }
+        ///// <summary>
+        ///// Quantidade do produto disponível através de estoque externo.
+        ///// </summary>
+        //public int? StockExternal { get; private set; }
 
 
 
@@ -73,23 +75,28 @@ namespace Catalog.Api.Domain
 
         /// <summary>
         /// Ativar
-        /// Marque a caixa para publicar este produto (visível na loja e estoque).
-        /// Desmarque para false para não publicar (produto não disponível na loja e estoque).
         /// </summary>
-        public override void Actived() => this.Active = true;
+        public override void Actived()
+        {
+            this.Active = true;
+            this.ModifiedAt = DateTime.UtcNow.AddDays(UTC);
+        }
+
 
         /// <summary>
         /// Desativar
-        /// Marque a caixa para publicar este produto (visível na loja e estoque).
-        /// Desmarque para false para não publicar (produto não disponível na loja e estoque).
         /// </summary>
-        public override void Deactived() => this.Active = false;
+        public override void Deactived()
+        {
+            this.Active = false;
+            this.ModifiedAt = DateTime.UtcNow.AddDays(UTC);
+        }
 
         public override void Delete()
         {
             this.Deleted = true;
             this.Active = false;
-            this.DeleteAt = DateTime.UtcNow;
+            this.DeleteAt = DateTime.UtcNow.AddDays(UTC);
         }
     }
 }

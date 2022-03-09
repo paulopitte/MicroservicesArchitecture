@@ -21,6 +21,11 @@ namespace Core.Common.Extensions
         public static IServiceCollection AddApplicationEvents(this IServiceCollection services) =>
             services.AddSingleton<IApplicationEvents, ApplicationEvents>();
 
+        public static IServiceCollection AddLogging(this IServiceCollection services, IConfiguration configuration = null)
+        {
+            return services;
+        }
+
         //public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
         //{
         //    var redisOptions = new CacheOptions();

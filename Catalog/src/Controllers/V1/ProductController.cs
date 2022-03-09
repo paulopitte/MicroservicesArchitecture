@@ -1,8 +1,10 @@
-﻿using Catalog.Api.Domain;
+﻿using AutoMapper;
 using Catalog.Api.Repository;
+using Request = Core.Contracts.Requests;
 using Core.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
+using Domain = Catalog.Api.Domain;
 
 namespace Catalog.Api.Controllers.V1
 {
@@ -10,7 +12,6 @@ namespace Catalog.Api.Controllers.V1
     [Route("api/v{version:apiVersion}/[controller]")]
     [ProducesResponseType(typeof(MessageErrorBase), 400)]
     [ProducesResponseType(typeof(MessageErrorBase), 500)]
-    //[ApiConventionType(typeof(DefaultApiConventions))]
     [Produces("application/json")]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
@@ -18,11 +19,15 @@ namespace Catalog.Api.Controllers.V1
     {
 
         private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, IMapper mapper)
         {
             this._productRepository = productRepository ??
                 throw new ArgumentNullException(nameof(productRepository));
+
+            _mapper = mapper;
+
         }
 
 
@@ -39,7 +44,7 @@ namespace Catalog.Api.Controllers.V1
         /// <returns></returns>
         [HttpGet("[action]/{sku}", Name = "GetBySku")]
         [MapToApiVersion("1.0")]
-        [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Request.Product), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
@@ -63,7 +68,7 @@ namespace Catalog.Api.Controllers.V1
         /// <response code="500">Se ocorrer um erro no servidor.</response>
         /// <returns></returns>
         [HttpGet("[action]/{category}", Name = "GetByCategory")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Request.Product>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
@@ -90,14 +95,16 @@ namespace Catalog.Api.Controllers.V1
         /// <response code="404">Se o produto informado não for encontrado.</response>
         /// <response code="500">Se ocorrer um erro no servidor.</response>
         [HttpPost]
-       // [Route("[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+        // [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Request.Product))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] Product product)
+        public async Task<IActionResult> Create([FromBody] Request.Product request)
         {
-            if (product is null)
+            if (request is null)
                 return BadRequest("Invalid Product Request.");
+
+            var product = _mapper.Map<Domain.Product>(request);
 
             await _productRepository.CreateAsync(product).ConfigureAwait(false);
 
@@ -116,14 +123,16 @@ namespace Catalog.Api.Controllers.V1
         /// <response code="404">Se o produto informado não for encontrado.</response>
         /// <response code="500">Se ocorrer um erro no servidor.</response>
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Request.Product))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromBody] Product product)
+        public async Task<IActionResult> Update([FromBody] Request.Product request)
         {
-            if (product is null)
+            if (request is null)
                 return BadRequest("Invalid Product Request.");
-            
+
+            var product = _mapper.Map<Domain.Product>(request);
+
             return Ok(await _productRepository.UpdateAsync(product));
         }
 
@@ -139,7 +148,7 @@ namespace Catalog.Api.Controllers.V1
         /// <response code="500">Se ocorrer um erro no servidor.</response>
         [HttpDelete("{id}")]
         //[Route("[action]/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Request.Product))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

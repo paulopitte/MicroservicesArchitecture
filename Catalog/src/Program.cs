@@ -23,6 +23,7 @@ var supportedCultures = new[] { brazilianPortuguese };
 #endregion
 
 builder.Services.AddApplicationEvents();
+builder.Services.AddLogging(builder.Configuration);
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 builder.Services.AddCorsAPI(CorsPolicyName);
 builder.Services.AddBusinessServices(builder.Configuration);
@@ -59,10 +60,6 @@ app.UseAuthorization();
 app.UseHealthChecks("/status");
 app.UseRouting();
 app.MapControllers();
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Catalog microservice API UP!"); }); 
-//});
 
 
 

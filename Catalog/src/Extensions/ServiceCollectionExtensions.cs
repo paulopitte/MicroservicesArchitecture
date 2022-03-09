@@ -31,16 +31,15 @@ namespace Catalog.Api.Extensions
             services.AddOptions();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
+            services.AddHealthChecks();
+            services.AddMvc(); // ==>  Necessario para uso da Interface IDistributedCache
 
-          
             services.AddAutoMapper(typeof(DomainToResponseMappingProfile), typeof(RequestToCommandMappingProfile));
             services.AddApiVersioningConfig();
             services.AddJwtconfig(configuration, null);
             services.AddSwaggerConfig();
-            services.AddHealthChecks();
+            
 
-
-          
 
             // HABILITA O MODULO DE COMPACTAÇÃO PARA RESPONSE HTTP
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
