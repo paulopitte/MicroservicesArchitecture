@@ -1,15 +1,98 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Globalization;
+using System.Text;
 
 namespace Core.Common.Extensions
 {
+    using Models;
+
     public static class ServiceCollectionExtensions
     {
+        //public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
+        //{
+        //    var redisOptions = new CacheOptions();
+        //    configuration.GetSection("DistributedCache").Bind(redisOptions);
+        //    services.AddRedisDistributedCache(ro =>
+        //    {
+        //        ro.ConnectionString = redisOptions.ConnectionString;
+        //        ro.DatabaseId = redisOptions.DatabaseId;
+        //        ro.DefaultCacheTime = redisOptions.DefaultCacheTime;
+        //        ro.ShortCacheTime = redisOptions.ShortCacheTime;
+        //        ro.IgnoreTimeoutException = redisOptions.IgnoreTimeoutException;
+        //    });
+
+        //    return services;
+        //}
+
+        public static IServiceCollection AddJwtconfig(this IServiceCollection services, IConfiguration configuration, string pJwtSettings = null)
+        {
+
+
+            // services.AddDataProtection();
+
+
+            var jwtSettingsSection = configuration.GetSection("JwtSettings" ?? pJwtSettings);
+            services.Configure<JwtSettings>(jwtSettingsSection);
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
+
+            services.AddAuthentication(config =>
+            {
+                config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(config =>
+            {
+                config.RequireHttpsMetadata = true;
+                config.SaveToken = true;
+                config.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    ClockSkew = System.TimeSpan.Zero
+                };
+            });
+
+            return services;
+        }
+
+
+        public static IServiceCollection AddApiVersioningConfig(this IServiceCollection services)
+        {
+
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigurationSwaggerOptions>();
+
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+
+            });
+            return services;
+        }
+
+
+
         public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
@@ -120,13 +203,19 @@ namespace Core.Common.Extensions
             {
                 return new OpenApiInfo
                 {
-                    Title = "Sistema Integrado de Gestão Comercial - API",
+                    Title = "Exemplo microservices - API",
+                    License = new OpenApiLicense
+                    {
+                        Name = "Paulo Pitte" ,
+                        Url = new Uri("https://paulopitte.io")
+                    },
                     Version = description.ApiVersion.ToString(),
                     Description = "Sistema Integrado de Gestão Comercial",
                     Contact = new OpenApiContact
                     {
-                        Name = "Sistema Integrado de Gestão Comercial",
-                        Url = new Uri("https://paulopitte.io")
+                        Name = "Brincadeiras com microservices - API",
+                        Url = new Uri("https://paulopitte.io"),
+                        Email = "paulopitte@gmail.com"
                     }
                 };
             }

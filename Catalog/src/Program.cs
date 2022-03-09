@@ -1,7 +1,6 @@
 
 using Catalog.Api.Extensions;
-using Core.Common.Extensions;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +8,9 @@ builder.Services.AddInfrastructureAPI(builder.Configuration);
 builder.Services.AddBusinessServices(builder.Configuration);
 
 builder.Services.AddControllers();
+//.AddValidation()
+
+ 
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();

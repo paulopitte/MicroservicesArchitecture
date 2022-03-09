@@ -19,6 +19,20 @@ namespace Catalog.Api.Extensions
             if (services == null) throw new ArgumentNullException(nameof(services));
 
 
+            //Ops: Necessario para leitura das configurações
+            services.AddOptions();
+
+
+
+
+          
+            services.AddAutoMapper(typeof(DomainToResponseMappingProfile), typeof(RequestToCommandMappingProfile));
+            services.AddApiVersioningConfig();
+            services.AddJwtconfig(configuration, null);
+            services.AddSwaggerConfig();
+            services.AddHealthChecks();
+
+
             // HABILITA O MODULO DE COMPACTAÇÃO PARA RESPONSE HTTP
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
             services.AddResponseCompression(options =>
@@ -28,10 +42,6 @@ namespace Catalog.Api.Extensions
             });
 
 
-            services.AddAutoMapper(typeof(DomainToResponseMappingProfile), typeof(RequestToCommandMappingProfile));
-
-
-            services.AddSwaggerConfig();
             services.AddScoped<ICatalogContext, CatalogContext>();
             return services;
         }
