@@ -26,7 +26,7 @@ builder.Services.AddApplicationEvents();
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 builder.Services.AddCorsAPI(CorsPolicyName);
 builder.Services.AddBusinessServices(builder.Configuration);
-
+ 
 
 var app = builder.Build();
 

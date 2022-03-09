@@ -32,7 +32,7 @@ namespace Catalog.Api.Extensions
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 
-
+          
             services.AddAutoMapper(typeof(DomainToResponseMappingProfile), typeof(RequestToCommandMappingProfile));
             services.AddApiVersioningConfig();
             services.AddJwtconfig(configuration, null);
