@@ -6,14 +6,13 @@ namespace Catalog.Api.Repository
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetProductsAsync();
-        Task<IEnumerable<Product>> GetProductsByTitle(string title);
+        Task<IEnumerable<Product>> GetProductsByTitleAsync(string title);
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(string name);
         Task<Product> GetBySkuAsync(string sku);
         Task<Product> GetProductAsync(string id);
 
         Task CreateAsync(Product product);
         Task<bool> UpdateAsync(Product product);
-
         Task<bool> DeleteAsync(string id);
     }
 
@@ -74,7 +73,7 @@ namespace Catalog.Api.Repository
             return await _context.Products.Find(filter).ToListAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByTitle(string title)
+        public async Task<IEnumerable<Product>> GetProductsByTitleAsync(string title)
         {
             FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(x => x.Title, title);
             return await _context.Products.Find(filter).ToListAsync();
