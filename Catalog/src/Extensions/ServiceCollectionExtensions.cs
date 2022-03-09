@@ -21,17 +21,18 @@ namespace Catalog.Api.Extensions
 
             //Ops: Necessario para leitura das configurações
             services.AddOptions();
+            services.AddControllers();
+            services.AddEndpointsApiExplorer();
 
 
-
-
-          
             services.AddAutoMapper(typeof(DomainToResponseMappingProfile), typeof(RequestToCommandMappingProfile));
             services.AddApiVersioningConfig();
             services.AddJwtconfig(configuration, null);
             services.AddSwaggerConfig();
             services.AddHealthChecks();
 
+
+          
 
             // HABILITA O MODULO DE COMPACTAÇÃO PARA RESPONSE HTTP
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
@@ -43,6 +44,26 @@ namespace Catalog.Api.Extensions
 
 
             services.AddScoped<ICatalogContext, CatalogContext>();
+            return services;
+        }
+
+        public static IServiceCollection AddCorsAPI(this IServiceCollection services, string corsPolicyName)
+        {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            services.AddCors(options =>
+            {
+                options.AddPolicy(corsPolicyName,
+                    builder => builder
+                        .WithOrigins(
+                            "http://localhost:60414",
+                            "https://localhost:60414",
+                            "https://localhost:8080")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithExposedHeaders("x-custom-header")
+                );
+            });
             return services;
         }
     }

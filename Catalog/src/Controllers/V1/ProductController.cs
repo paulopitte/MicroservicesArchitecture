@@ -4,21 +4,22 @@ using Core.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
-namespace Catalog.Api.Controllers
+namespace Catalog.Api.Controllers.V1
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ProducesResponseType(typeof(MessageErrorBase), 400)]
     [ProducesResponseType(typeof(MessageErrorBase), 500)]
     //[ApiConventionType(typeof(DefaultApiConventions))]
     [Produces("application/json")]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
-    public class CatalogController : ControllerBase // BaseController
+    public class ProductController : ControllerBase // BaseController
     {
 
         private readonly IProductRepository _productRepository;
 
-        public CatalogController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository)
         {
             this._productRepository = productRepository ??
                 throw new ArgumentNullException(nameof(productRepository));
@@ -37,6 +38,7 @@ namespace Catalog.Api.Controllers
         /// <response code="500">Se ocorrer um erro no servidor.</response>
         /// <returns></returns>
         [HttpGet("[action]/{sku}", Name = "GetBySku")]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

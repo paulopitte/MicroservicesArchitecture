@@ -194,7 +194,9 @@ namespace Core.Common.Extensions
             {
                 foreach (var description in _provider.ApiVersionDescriptions)
                 {
-                    options.SwaggerDoc(description.GroupName, CreateApiInfo(description));
+                    options.SwaggerDoc(
+                        description.GroupName, 
+                        CreateApiInfo(description));
                 }
             }
 

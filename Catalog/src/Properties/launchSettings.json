@@ -9,24 +9,49 @@
     }
   },
   "profiles": {
-    "Catalog.Api": {
+    "Kestrel (Development)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "APPLICATION_NAME": "Catalog",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:7199;http://localhost:5199",
-      "dotnetRunMessages": true
+      "dotnetRunMessages": "true",
+      "applicationUrl": "https://localhost:60414"
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "Kestrel (Local)": {
+      "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "APPLICATION_NAME": "Catalog",
+        "ASPNETCORE_ENVIRONMENT": "Local"
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "https://localhost:60414"
     },
+    "Kestrel (Production)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "APPLICATION_NAME": "Catalog",
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "http://localhost:60414/"
+    },
+    "Kestrel (Staging / QA)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "APPLICATION_NAME": "Catalog",
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "http://localhost:60414/"
+    },
+
+
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,

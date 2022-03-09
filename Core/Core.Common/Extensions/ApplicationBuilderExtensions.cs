@@ -22,7 +22,7 @@ namespace Core.Common.Extensions
                 {
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                 }
-                //  options.InjectStylesheet("/swagger-ui/site.css");
+                  options.InjectStylesheet("/swagger-ui/site.css");
             });
             return app;
         }
