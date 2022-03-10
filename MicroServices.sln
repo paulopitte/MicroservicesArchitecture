@@ -11,13 +11,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Api", "Catalog\src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Api", "Order\src\Order.Api.csproj", "{7DCF9939-AA72-4995-A51E-2FCB908FC04A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.Api", "Basket\Basket.Api\Basket.Api.csproj", "{BA74722D-C185-4525-B05A-5BC5154022BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket.Api", "Basket\Basket.Api\Basket.Api.csproj", "{BA74722D-C185-4525-B05A-5BC5154022BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A2BC51AA-1040-4DA7-AED5-2097C50E2A6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Common", "Core\Core.Common\Core.Common.csproj", "{31BBFEB1-7A66-4EFB-B2CC-9FADD09086F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Common", "Core\Core.Common\Core.Common.csproj", "{31BBFEB1-7A66-4EFB-B2CC-9FADD09086F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Contracts", "Core\Core.Contracts\Core.Contracts.csproj", "{68ADC9B0-6355-4FDE-8F2E-9B92B00B6A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Contracts", "Core\Core.Contracts\Core.Contracts.csproj", "{68ADC9B0-6355-4FDE-8F2E-9B92B00B6A4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0741F516-91E5-4C22-BAEB-FE59E47A8F4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{0D7711D4-9D03-4926-8713-F7C6093677BD}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		..\..\..\PROJETOS\SIGC\repos\Sigc.MktHub.Catalog\nuget.config = ..\..\..\PROJETOS\SIGC\repos\Sigc.MktHub.Catalog\nuget.config
+		..\..\..\PROJETOS\SIGC\repos\Sigc.MktHub.Catalog\readme.md = ..\..\..\PROJETOS\SIGC\repos\Sigc.MktHub.Catalog\readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
