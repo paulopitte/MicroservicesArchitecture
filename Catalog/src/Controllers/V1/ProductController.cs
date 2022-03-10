@@ -29,6 +29,36 @@ namespace Catalog.Api.Controllers.V1
 
 
 
+        /// <summary>
+        /// Obtem todos Producto 
+        /// </summary>
+        /// <param name="id">Id do produto.</param>
+        /// <response code="200">Se o produto existir.</response>
+        /// <response code="400">Se a requisição não atender os requisitos mínimos.</response>
+        /// <response code="404">Se o produto não for encontrado.</response>
+        /// <response code="429">Se ocorrer muitas solicitações ao servidor.</response>       
+        /// <response code="500">Se ocorrer um erro no servidor.</response>
+        /// <returns></returns>
+        [HttpGet("[action]", Name = "GetProducts")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(IEnumerable<Request.Product>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetProductsAsync()
+        {
+            var products = await _productService.GetProductsAsync();
+            if (products is null)
+                return NotFound("Products not found");
+            return Ok(products);
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// Obtem um Producto pela pesquisa de ID
@@ -47,7 +77,7 @@ namespace Catalog.Api.Controllers.V1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetByIdAsync(string id)
         {
             var product = await _productService.GetByIdAsync(id);
             if (product is null)

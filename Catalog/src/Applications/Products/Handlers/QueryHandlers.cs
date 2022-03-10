@@ -6,7 +6,8 @@ using Sigc.MktHub.Catalog.Core.Application.Products.Queries;
 
 namespace Sigc.MktHub.Catalog.Core.Application.Products.Handlers
 {
-    public class QueryHandlers : IRequestHandler<GetProductByIdQuery, Product>,
+    public class QueryHandlers : IRequestHandler<GetProductsQuery, IEnumerable<Product>>,
+                                 IRequestHandler<GetProductByIdQuery, Product>,
                                  IRequestHandler<GetProductBySkuQuery, Product>,
                                  IRequestHandler<GetCheckExistsBySkuQuery, bool>
     {
@@ -32,6 +33,9 @@ namespace Sigc.MktHub.Catalog.Core.Application.Products.Handlers
         public async Task<bool> Handle(GetCheckExistsBySkuQuery request, CancellationToken cancellationToken) =>
             await _productRepository.CheckExistsAsync(request.Sku);
 
+        public async Task<IEnumerable<Product>> Handle(GetProductsQuery request, CancellationToken cancellationToken) =>
+              await _productRepository.GetProductsAsync()
+                                      .ConfigureAwait(false);
 
     }
 }

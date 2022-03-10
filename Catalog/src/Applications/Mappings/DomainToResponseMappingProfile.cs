@@ -10,6 +10,7 @@ namespace Catalog.Api.Application.Mappings
         public DomainToResponseMappingProfile()
         {
             CreateMap<Domain.Product, Request.Product>().ReverseMap();
+            CreateMap<IEnumerable<Domain.Product>, IEnumerable<Request.Product>>().ReverseMap();
             CreateMap<ProductCreateCommand, Request.Product>().ReverseMap();
             CreateMap<ProductUpdateCommand, Request.Product>().ReverseMap();
             CreateMap<ProductDeleteCommand, Request.Product>().ReverseMap();

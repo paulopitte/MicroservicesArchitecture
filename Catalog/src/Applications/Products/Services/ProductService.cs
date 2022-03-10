@@ -5,6 +5,7 @@ using Request = Core.Contracts.Requests;
 using Sigc.MktHub.Catalog.Core.Application.Products.Queries;
 using Catalog.Api.Applications.Products.Commands;
 using Core.Contracts.Requests;
+using Catalog.Api.Applications.Products.Queries;
 
 namespace Catalog.Api.Core.Application.Products.Services
 {
@@ -18,6 +19,7 @@ namespace Catalog.Api.Core.Application.Products.Services
         Task<Request.Product> GetByIdAsync(string id, int channelId = 0);
         Task<Request.Product> GetBySkuAsync(string sku, int channelId = 0);
         Task<Request.Product> GetProductsByCategoryAsync(string category);
+        Task<IEnumerable<Product>> GetProductsAsync(bool? @state = null);
     }
 
     public class ProductService : IProductService
@@ -109,6 +111,13 @@ namespace Catalog.Api.Core.Application.Products.Services
         public async Task<Product> GetProductsByCategoryAsync(string category)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsAsync(bool? @state = null)
+        {
+
+            var products = await _mediator.Send(new GetProductsQuery() { State = @state });
+            return _mapper.Map<IEnumerable<Request.Product>>(products);
         }
 
 
