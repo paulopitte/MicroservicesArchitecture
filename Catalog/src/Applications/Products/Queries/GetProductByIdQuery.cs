@@ -1,7 +1,7 @@
 ﻿using Catalog.Api.Domain;
 using MediatR;
  
-namespace Sigc.MktHub.Catalog.Core.Application.Products.Queries
+namespace Catalog.Api.Applications.Products.Queries
 {
     public struct GetProductByIdQuery : IRequest<Product>
     {

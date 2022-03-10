@@ -49,7 +49,7 @@ namespace Catalog.Api.Extensions
             services.AddApiVersioningConfig();
             services.AddJwtconfig(configuration, null);
             services.AddSwaggerConfig();
-            
+            services.AddCaching(configuration);
 
 
             // HABILITA O MODULO DE COMPACTAÇÃO PARA RESPONSE HTTP

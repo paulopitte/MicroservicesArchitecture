@@ -129,7 +129,7 @@ namespace Catalog.Api.Applications.Products.Handlers
 
 
         private async Task<bool> CheckHasProduct(string sku) =>
-            await _productRepository.CheckExistsAsync(sku);
+            await _productRepository.CheckExistsBySkuAsync(sku);
 
         private async Task<Product> CheckHasProductId(string id) =>
            await _productRepository.GetProductAsync(id);
@@ -163,7 +163,7 @@ namespace Catalog.Api.Applications.Products.Handlers
                     if (ValidationResult.IsValid)
                     {
                         //TODO: LIMPA CACHE
-                        //    await _productRepository.CleanProductCacheBySku(request.Sku, request.ChannelId);
+                            await _productRepository.CleanProductCacheBySku(request.Sku, request.ChannelId);
                     }
                     return ValidationResult;
                 }

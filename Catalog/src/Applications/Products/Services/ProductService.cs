@@ -2,7 +2,6 @@
 using FluentValidation.Results;
 using MediatR;
 using Request = Core.Contracts.Requests;
-using Sigc.MktHub.Catalog.Core.Application.Products.Queries;
 using Catalog.Api.Applications.Products.Commands;
 using Core.Contracts.Requests;
 using Catalog.Api.Applications.Products.Queries;
@@ -106,7 +105,7 @@ namespace Catalog.Api.Core.Application.Products.Services
 
 
         public async Task<Request.Product> GetByIdAsync(string id, int channelId = 0) => _mapper.Map<Request.Product>(await _mediator.Send(new GetProductByIdQuery(id)));
-        public async Task<Request.Product> GetBySkuAsync(string sku, int channelId = 0) => _mapper.Map<Request.Product>(await _mediator.Send(new GetProductBySkuQuery(sku)));
+        public async Task<Request.Product> GetBySkuAsync(string sku, int channelId = 0) => _mapper.Map<Request.Product>(await _mediator.Send(new GetProductBySkuQuery(sku, channelId)));
 
         public async Task<Product> GetProductsByCategoryAsync(string category)
         {

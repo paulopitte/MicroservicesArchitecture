@@ -2,9 +2,8 @@
 using Catalog.Api.Domain;
 using Catalog.Api.Repository;
 using MediatR;
-using Sigc.MktHub.Catalog.Core.Application.Products.Queries;
 
-namespace Sigc.MktHub.Catalog.Core.Application.Products.Handlers
+namespace Catalog.Api.Core.Application.Products.Handlers
 {
     public class QueryHandlers : IRequestHandler<GetProductsQuery, IEnumerable<Product>>,
                                  IRequestHandler<GetProductByIdQuery, Product>,
@@ -15,10 +14,10 @@ namespace Sigc.MktHub.Catalog.Core.Application.Products.Handlers
         //TODO CONSULTA MONGODB
         private readonly IProductRepository _productRepository;
 
-        public QueryHandlers(IProductRepository productRepository)
-        {
-            _productRepository = productRepository;
-        }
+        public QueryHandlers(IProductRepository productRepository) =>
+            _productRepository = productRepository
+                ?? throw new ArgumentException(nameof(productRepository));
+
 
 
 
@@ -31,7 +30,7 @@ namespace Sigc.MktHub.Catalog.Core.Application.Products.Handlers
 
 
         public async Task<bool> Handle(GetCheckExistsBySkuQuery request, CancellationToken cancellationToken) =>
-            await _productRepository.CheckExistsAsync(request.Sku);
+            await _productRepository.CheckExistsBySkuAsync(request.Sku);
 
         public async Task<IEnumerable<Product>> Handle(GetProductsQuery request, CancellationToken cancellationToken) =>
               await _productRepository.GetProductsAsync()

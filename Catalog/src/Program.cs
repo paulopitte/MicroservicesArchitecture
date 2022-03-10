@@ -1,10 +1,10 @@
 
 using Catalog.Api.Extensions;
 using Core.Common.Extensions;
-using Core.Common.Models;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.Options;
+using Sigc.Core.Caching.ComponentModel;
+using Sigc.Core.Caching.Extensions;
 using System.Globalization;
 
 
@@ -40,6 +40,8 @@ var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>()
 
 // Primeiro Passo: Registro os eventos de ciclo de vida da aplicação.
 appLifetime.RegisterApplicationEvents(applicationBuilder, loggerFactory);
+
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -78,7 +80,7 @@ app.UseSwaggerConfig(provider);
 // Quinto Passo: Ativo a compressão dos responses
 app.UseResponseCompression();
 
-
+app.UseRedisDistributedCache(ApplicationType.Catalog);
 
 app.UseRequestLocalization(new RequestLocalizationOptions
 {

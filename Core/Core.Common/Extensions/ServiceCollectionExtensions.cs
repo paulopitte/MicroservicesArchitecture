@@ -15,6 +15,8 @@ namespace Core.Common.Extensions
 {
     using Core.Common.App;
     using Models;
+    using Sigc.Core.Caching.Extensions;
+    using Sigc.Core.Caching.Options;
 
     public static class ServiceCollectionExtensions
     {
@@ -28,19 +30,33 @@ namespace Core.Common.Extensions
 
         //public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
         //{
-        //    var redisOptions = new CacheOptions();
-        //    configuration.GetSection("DistributedCache").Bind(redisOptions);
-        //    services.AddRedisDistributedCache(ro =>
-        //    {
-        //        ro.ConnectionString = redisOptions.ConnectionString;
-        //        ro.DatabaseId = redisOptions.DatabaseId;
-        //        ro.DefaultCacheTime = redisOptions.DefaultCacheTime;
-        //        ro.ShortCacheTime = redisOptions.ShortCacheTime;
-        //        ro.IgnoreTimeoutException = redisOptions.IgnoreTimeoutException;
-        //    });
+        //    const string DISTRIBUTEDCACHE = "DistributedCache";
 
+        //    services.AddStackExchangeRedisCache(Options =>
+        //        {
+        //            Options.Configuration = configuration.GetValue<string>($"{DISTRIBUTEDCACHE}:ConnectionString");
+        //        });
         //    return services;
+
         //}
+
+        public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
+        {
+            const string DISTRIBUTEDCACHE = "DistributedCache";
+
+            var redisOptions = new CacheOptions();
+            configuration.GetSection(DISTRIBUTEDCACHE).Bind(redisOptions);
+            services.AddRedisDistributedCache(ro =>
+            {
+                ro.ConnectionString = redisOptions.ConnectionString;
+                ro.DatabaseId = redisOptions.DatabaseId;
+                ro.DefaultCacheTime = redisOptions.DefaultCacheTime;
+                ro.ShortCacheTime = redisOptions.ShortCacheTime;
+                ro.IgnoreTimeoutException = redisOptions.IgnoreTimeoutException;
+            });
+
+            return services;
+        }
 
         public static IServiceCollection AddJwtconfig(this IServiceCollection services, IConfiguration configuration, string pJwtSettings = null)
         {

@@ -22,8 +22,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Sigc.Core.Caching" Version="1.0.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 		<PackageReference Include="TimeZoneConverter" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.3" />
+		
+		
+
 	</ItemGroup>
 
 </Project>
