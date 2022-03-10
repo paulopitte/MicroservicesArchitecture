@@ -115,9 +115,8 @@ namespace Catalog.Api.Core.Application.Products.Services
 
         public async Task<IEnumerable<Product>> GetProductsAsync(bool? @state = null)
         {
-
-            var products = await _mediator.Send(new GetProductsQuery() { State = @state });
-            return _mapper.Map<IEnumerable<Request.Product>>(products);
+            var results = await _mediator.Send(new GetProductsQuery() { State = @state });
+            return _mapper.Map<IEnumerable<Request.Product>>(results);
         }
 
 
