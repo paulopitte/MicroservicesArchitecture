@@ -21,5 +21,6 @@ namespace Catalog.Api.Applications.Products.Commands
         /// </summary>
         public string Title { get; set; }
         public decimal? Price { get; internal set; }
+        public int? Stock { get; internal set; }
     }
 }

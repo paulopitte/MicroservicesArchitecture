@@ -107,15 +107,13 @@ namespace Catalog.Api.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Request.Product))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] Request.Product request)
+        public async Task<IActionResult> SaveAsync([FromBody] Request.Product request)
         {
             if (request is null)
                 return BadRequest("Invalid Product Request.");
 
-            await _productService.SaveAsync(request, GetChannelId(), CreateHeaderDefault()).ConfigureAwait(false);
-            return CreatedAtRoute("GetBySku", new { sku = request.Sku }, request);
-
-            //return !ModelState.IsValid ? BadRequest(ModelState) : Created("",null);
+            return !ModelState.IsValid ? JsonResult(ModelState) : JsonResult(await _productService.SaveAsync(request, GetChannelId(), CreateHeaderDefault()));
+            // return CreatedAtRoute("GetBySku", new { sku = request.Sku }, request); 
         }
 
 

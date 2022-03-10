@@ -40,5 +40,24 @@ namespace Catalog.Api.Applications.Products.Validations
                    .WithErrorCode("Product.Title.BetterThanMaximun");
         }
 
+        protected void ValidationPrice()
+        {
+            RuleFor(c => c.Price)
+                   .NotEmpty()
+                   .NotEqual(0)
+                   .WithMessage("O Preço do Produto é obrigátorio!")
+                   .WithErrorCode("Product.Price.Empty");
+        }
+
+        protected void ValidationPriceTwoDecimal()
+        {
+            RuleFor(x => x.Price)
+                .ScalePrecision(2, 10)
+                .WithMessage("O Preço do Produto deve conter apenas 2 casas decimais")
+                .WithErrorCode("Product.Price.ScalePrecision");
+
+
+        }
+
     }
 }

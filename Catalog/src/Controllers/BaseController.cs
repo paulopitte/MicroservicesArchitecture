@@ -63,21 +63,20 @@ namespace Catalog.Api.Controllers
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected ActionResult JsonResult(object result = null)
+        protected ActionResult JsonResult(object? result = null)
         {
             if (IsOperationValid())
             {
-                return Ok(new
+
+                return Created(String.Empty, new
                 {
                     success = true,
                     data = result
                 });
             }
 
-
             return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
             {
-
                 { "Messages", _errors.ToArray() }
             }));
         }

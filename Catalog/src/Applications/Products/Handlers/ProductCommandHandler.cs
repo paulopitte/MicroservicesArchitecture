@@ -31,13 +31,13 @@ namespace Catalog.Api.Applications.Products.Handlers
         {
             LogReceivedMessage(LogLevel.Information, request,
                            "[{ProviderTypeName}/{ProviderActionType}] Notificação de inclusão de produto recebida. Iniciando processamento...",
-                           ProviderTypeName, "ProductInsertCommand");
+                           ProviderTypeName, typeof(ProductCreateCommand).Name);
 
 
             if (await CheckHasProduct(request.Sku))
             {
                 _logger.LogWarning("Product already in the system.");
-                AddError("Produto ja existente");
+                AddError("Produto ja existente cadastrado.");
                 return ValidationResult;
             }
 
@@ -48,7 +48,7 @@ namespace Catalog.Api.Applications.Products.Handlers
         //{
         //    LogReceivedMessage(LogLevel.Information, request,
         //                    "[{ProviderTypeName}/{ProviderActionType}] Notificação de Atualização de produto recebida. Iniciando processamento...",
-        //                    ProviderTypeName, "ProductInsertCommand");
+        //                    ProviderTypeName, typeof(ProductUpdateCommand).Name);
 
         //    if (!await CheckHasProduct(request.Sku))
         //    {
@@ -64,7 +64,7 @@ namespace Catalog.Api.Applications.Products.Handlers
         //{
         //    LogReceivedMessage(LogLevel.Information, request,
         //                  "[{ProviderTypeName}/{ProviderActionType}] Notificação de Exclusão de produto recebida. Iniciando processamento...",
-        //                  ProviderTypeName, "ProductInsertCommand");
+        //                  ProviderTypeName,  typeof(ProductDeleteCommand).Name);
 
         //    var product = await _productRepository.GetBySkuAsync(request.Sku, request.ChannelId);
 
@@ -100,11 +100,11 @@ namespace Catalog.Api.Applications.Products.Handlers
 
         private async Task<ValidationResult> SaveAsync(ProductCommand request)
         {
+            // 1 - Map -> Aqui eu poderia estar usando um automapper ou de forma mais ingênua um extension para o objeto de dominio. (Command => Domain)
+            var productDomain = Domain.Product.Factory.Create(request.Sku, request.Title, request.Price.GetValueOrDefault(), request.Stock.GetValueOrDefault());
 
-            Product product = new(request.Sku,  request.Title, request.Price);
 
-
-            if (product is null)
+            if (productDomain is null)
             {
                 throw new DomainValidationException(string.Empty, "Falha ao tentar criar um novo Objeto Product.", "Product.Create");
             }
@@ -112,7 +112,7 @@ namespace Catalog.Api.Applications.Products.Handlers
             {
                 try
                 {
-                    await _productRepository.SaveAsync(product);
+                    await _productRepository.SaveAsync(productDomain);
                     //ValidationResult = await Commit(_productRepository.UnitOfWork);
 
 
@@ -132,32 +132,7 @@ namespace Catalog.Api.Applications.Products.Handlers
                     AddError("Falha ao tentar atualizar um produto. Finalizando processamento...");
                     return ValidationResult;
                 }
-
             }
-
-
-
-            //  var channel = await _configurationRepository.GetChannelByIdAsync(message.SellerId);
-            //  var product = message.Product.Map(message.SellerId);
-
-            ////  _productService.SetDefaultValuesForVariations(product, channel);
-
-            //  await _productRepository.SaveAsync(product, saveAssociate);
-
-            //  // REMOVE CACHEKEY
-            //  this.RemoveCacheKey(product.Sku, message.SellerId);
-
-            //  _logger.LogInformation("Apply bussiness rule and save product.");
-
-            //  //TODO: Cria mensagens para HubFrete
-
-            //  await UpdateStockOrder(message.Product, message.SellerId, true, headers);
-
-            //  var eventSaved = new ProductSavedNotification(message.Product, message.SellerId, isNew);
-            //  await _busProductNotification.Publish(eventSaved, headers.GetKaiveHeaders());
-
-            // _logger.LogInformation("Publish message ProductSavedNotification.");
         }
-
     }
 }

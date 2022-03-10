@@ -9,6 +9,8 @@ namespace Catalog.Api.Applications.Products.Validations
         {
             ValidationSku();
             ValidationTitle();
+            ValidationPrice();
+            ValidationPriceTwoDecimal();
         }
     }
 }

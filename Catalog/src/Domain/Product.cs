@@ -2,7 +2,7 @@
 
 namespace Catalog.Api.Domain
 {
-    public class Product : BaseEntity
+    public sealed class Product : BaseEntity
     {
         private const int UTC = -3;
 
@@ -16,6 +16,19 @@ namespace Catalog.Api.Domain
             this.Active = true;
         }
 
+        /// <summary>
+        /// Inclui uma classe aninhada statica personalizando nossa criação exclusiva de execução à um produto.
+        /// </summary>
+        public static class Factory
+        {
+            public static Product Create(string sku, string title, decimal? price = 0M, int? stock = 0)
+            {
+                return new Product(sku, title, price)
+                {
+                    Stock = stock
+                };
+            }
+        };
 
 
 
