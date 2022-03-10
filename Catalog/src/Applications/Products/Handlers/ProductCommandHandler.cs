@@ -62,7 +62,33 @@ namespace Catalog.Api.Applications.Products.Handlers
                 return ValidationResult;
             }
 
-            return await SaveAsync(request);
+            
+            try
+            {
+                var productDomain = Domain.Product.Factory.Update(request.Id, request.Sku, request.Title, request.Price.GetValueOrDefault(), request.Stock.GetValueOrDefault());
+
+                if (productDomain is null)
+                    throw new DomainValidationException(string.Empty, "Falha ao tentar criar um novo Objeto Product.", "Product.Update");
+
+                await _productRepository.UpdateAsync(productDomain);
+
+                if (ValidationResult.IsValid)
+                {
+                    //TODO: LIMPA CACHE
+                    //    await _productRepository.CleanProductCacheBySku(request.Sku, request.ChannelId);
+                }
+                return ValidationResult;
+            }
+            catch (Exception ex)
+            {
+                LogReceivedMessage(LogLevel.Critical, ex,
+                                          "[{ProviderTypeName}/{ProviderActionType}] Falha Critica ao Executar uma operação no banco de dados. Finalizando processamento...",
+                                           ProviderTypeName, typeof(ProductUpdateCommand).Name);
+
+                AddError("Falha ao tentar criar um produto. Finalizando processamento...");
+                return ValidationResult;
+            }
+         
         }
 
 
@@ -121,23 +147,16 @@ namespace Catalog.Api.Applications.Products.Handlers
         private async Task<ValidationResult> SaveAsync(ProductCommand request)
         {
             // 1 - Map -> Aqui eu poderia estar usando um automapper ou de forma mais ingênua um extension para o objeto de dominio. (Command => Domain)
-            var productDomain = Domain.Product.Factory.Create(request.Id, request.Sku, request.Title, request.Price.GetValueOrDefault(), request.Stock.GetValueOrDefault());
+            var productDomain = new Domain.Product(request.Sku, request.Title, request.Price.GetValueOrDefault(), request.Stock.GetValueOrDefault());
 
 
-            if (productDomain is null)
-            {
-                throw new DomainValidationException(string.Empty, "Falha ao tentar criar um novo Objeto Product.", "Product.Create");
-            }
+            if (productDomain is null)            
+                throw new DomainValidationException(string.Empty, "Falha ao tentar criar um novo Objeto Product.", "Product.Create");           
             else
             {
                 try
                 {
-                    if (await CheckHasProduct(request.Sku))
-                        await _productRepository.SaveAsync(productDomain);
-                    else
-                        await _productRepository.UpdateAsync(productDomain);
-
-
+                    await _productRepository.SaveAsync(productDomain);
                     //ValidationResult = await Commit(_productRepository.UnitOfWork);
 
 
@@ -152,9 +171,9 @@ namespace Catalog.Api.Applications.Products.Handlers
                 {
                     LogReceivedMessage(LogLevel.Critical, ex,
                                               "[{ProviderTypeName}/{ProviderActionType}] Falha Critica ao Executar uma operação no banco de dados. Finalizando processamento...",
-                                               ProviderTypeName, "SaveAsync");
+                                               ProviderTypeName, typeof(ProductCreateCommand).Name);
 
-                    AddError("Falha ao tentar atualizar um produto. Finalizando processamento...");
+                    AddError("Falha ao tentar criar um produto. Finalizando processamento...");
                     return ValidationResult;
                 }
             }

@@ -2,12 +2,13 @@
 
 namespace Catalog.Api.Domain
 {
-    public  sealed class Product : BaseEntity
+    public sealed class Product : BaseEntity
     {
         private const int UTC = -3;
 
-        protected Product() { }
-        public Product(string sku, string title, decimal? price = 0M)
+        private Product() { }
+        
+        public Product(string sku, string title, decimal? price = 0M, int? stock = 0)
         {
             this.Id = Guid.NewGuid().ToString();
             this.Sku = sku;
@@ -19,11 +20,11 @@ namespace Catalog.Api.Domain
         }
 
         /// <summary>
-        /// Inclui uma classe aninhada statica personalizando nossa criação exclusiva de execução à um produto.
+        /// Inclui uma classe aninhada statica personalizando nossa atualização exclusiva de execução á um produto.
         /// </summary>
         public static class Factory
         {
-            public static Product Create(string id, string sku, string title, decimal? price = 0M, int? stock = 0)
+            public static Product Update(string id, string sku, string title, decimal? price = 0M, int? stock = 0)
             {
                 return new Product
                 {
@@ -31,7 +32,9 @@ namespace Catalog.Api.Domain
                     Sku = sku,
                     Title = title,
                     Price = price.GetValueOrDefault(),
-                    Stock = stock.GetValueOrDefault()
+                    Stock = stock.GetValueOrDefault(),
+                    ModifiedAt = DateTime.UtcNow.AddDays(UTC)
+
                 };
             }
         };
