@@ -3,19 +3,16 @@
     public struct ShoppingCart
     {
 
-        public ShoppingCart()
-        {
-
-        }
+        public ShoppingCart() { }
 
 
         public ShoppingCart(string name) =>
             UserName = name;
 
-        public string UserName { get; set; }
+        public string? UserName { get; set; } = null;
 
 
-        public List<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
+        public List<ShoppingCartItem> Items { get; set; } = new();
 
 
         public decimal TotalPrice
@@ -29,8 +26,5 @@
                 return TotalPrice;
             }
         }
-
-
-
     }
 }
