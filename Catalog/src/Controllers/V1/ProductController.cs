@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Catalog.Api.Repository;
-using Request = Core.Contracts.Requests;
+﻿using Request = Core.Contracts.Requests;
 using Core.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
-using Domain = Catalog.Api.Domain;
 using Catalog.Api.Core.Application.Products.Services;
 
 namespace Catalog.Api.Controllers.V1
@@ -19,14 +16,49 @@ namespace Catalog.Api.Controllers.V1
     public class ProductController : BaseController
     {
 
-        private readonly IProductService _productService ;
-      
+        private readonly IProductService _productService;
 
-        public ProductController(IProductService productService)
-        {
+
+        public ProductController(IProductService productService) =>
             this._productService = productService ??
-                throw new ArgumentNullException(nameof(productService));          
+                throw new ArgumentNullException(nameof(productService));
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Obtem um Producto pela pesquisa de ID
+        /// </summary>
+        /// <param name="id">Id do produto.</param>
+        /// <response code="200">Se o produto existir.</response>
+        /// <response code="400">Se a requisição não atender os requisitos mínimos.</response>
+        /// <response code="404">Se o produto não for encontrado.</response>
+        /// <response code="429">Se ocorrer muitas solicitações ao servidor.</response>       
+        /// <response code="500">Se ocorrer um erro no servidor.</response>
+        /// <returns></returns>
+        [HttpGet("[action]/{id}", Name = "GetById")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(Request.Product), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetById(string id)
+        {
+            var product = await _productService.GetByIdAsync(id);
+            if (product is null)
+                return NotFound("Product not found");
+            return Ok(product);
         }
+
+
+
+
+
 
 
 
@@ -49,8 +81,7 @@ namespace Catalog.Api.Controllers.V1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBySku(string sku)
         {
-         //   var produto = await _productService.GetBySkuAsync(sku);
-            var product = await _productService.GetBySkuAsync(sku);
+            var product = await _productService.GetBySkuAsync(sku, GetChannelId());
             if (product is null)
                 return NotFound("Product not found");
             return Ok(product);
@@ -139,8 +170,6 @@ namespace Catalog.Api.Controllers.V1
             if (request is null)
                 return BadRequest("Invalid Product Request.");
             return !ModelState.IsValid ? JsonResult(ModelState) : JsonResult(await _productService.UpdateAsync(request, GetChannelId(), CreateHeaderDefault()));
-
-            // return Ok(await _productService.UpdateAsync(request, GetChannelId(), CreateHeaderDefault()));
         }
 
 
@@ -168,15 +197,6 @@ namespace Catalog.Api.Controllers.V1
             if (id is null)
                 return BadRequest("Invalid Product Request.");
             return !ModelState.IsValid ? JsonResult(ModelState) : JsonResult(await _productService.DeleteAsync(id, GetChannelId(), CreateHeaderDefault()));
-
-            // return Ok(await _productService.DeleteAsync(id, GetChannelId(), CreateHeaderDefault()));
         }
-
-
-
-
-
-
-
     }
 }

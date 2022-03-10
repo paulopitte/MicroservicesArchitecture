@@ -2,7 +2,7 @@
 
 namespace Catalog.Api.Domain
 {
-    public sealed class Product : BaseEntity
+    public  sealed class Product : BaseEntity
     {
         private const int UTC = -3;
 
@@ -14,6 +14,7 @@ namespace Catalog.Api.Domain
             this.Title = title;
             this.Price = price;
             this.CreatedAt = DateTime.UtcNow.AddDays(UTC);
+            this.Category = "SEM-CATAGORIA";
             this.Active = true;
         }
 

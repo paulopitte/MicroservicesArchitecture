@@ -11,7 +11,7 @@ namespace Catalog.Api.Controllers.V2
     [Produces("application/json")]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         [MapToApiVersion("2.0")]
         [HttpGet("{sku}/has-product")]

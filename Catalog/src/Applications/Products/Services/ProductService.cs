@@ -15,6 +15,7 @@ namespace Catalog.Api.Core.Application.Products.Services
         Task<ValidationResult> DeleteAsync(string id, int channelId, Dictionary<string, string> headers);
 
 
+        Task<Request.Product> GetByIdAsync(string id, int channelId = 0);
         Task<Request.Product> GetBySkuAsync(string sku, int channelId = 0);
         Task<Request.Product> GetProductsByCategoryAsync(string category);
     }
@@ -46,7 +47,7 @@ namespace Catalog.Api.Core.Application.Products.Services
         public async Task<ValidationResult> SaveAsync(Request.Product request, int channelId, Dictionary<string, string> headers)
         {
             var command = _mapper.Map<ProductCreateCommand>(request);
-          
+
             var validationResult = await _mediator.Send(command);
 
             if (validationResult.IsValid)
@@ -75,7 +76,7 @@ namespace Catalog.Api.Core.Application.Products.Services
                 //TODO:  PUBLIC QUEUE
 
                 // REMOVE CACHE PARA NOVA PERSISTENCIA COM DADOS ATUALIZADOS
-              //  RemoveCacheKey(product.Sku, product.ChannelId);
+                //  RemoveCacheKey(product.Sku, product.ChannelId);
                 _logger.LogInformation("Apply bussiness rule and save product.");
 
 
@@ -86,7 +87,7 @@ namespace Catalog.Api.Core.Application.Products.Services
 
         public async Task<ValidationResult> DeleteAsync(string id, int channelId = 0, Dictionary<string, string> headers = null)
         {
-            var validationResult = await _mediator.Send(new ProductDeleteCommand() { Id = id});
+            var validationResult = await _mediator.Send(new ProductDeleteCommand() { Id = id });
             if (validationResult.IsValid)
             {
                 //TODO:  PUBLIC QUEUE / NOTIFICATION EVENTS ETC..
@@ -102,8 +103,8 @@ namespace Catalog.Api.Core.Application.Products.Services
         }
 
 
-        public async Task<Request.Product> GetBySkuAsync(string sku, int channelId = 0)
-            => _mapper.Map<Request.Product>(await _mediator.Send(new GetProductBySkuQuery(sku)));
+        public async Task<Request.Product> GetByIdAsync(string id, int channelId = 0) => _mapper.Map<Request.Product>(await _mediator.Send(new GetProductByIdQuery(id)));
+        public async Task<Request.Product> GetBySkuAsync(string sku, int channelId = 0) => _mapper.Map<Request.Product>(await _mediator.Send(new GetProductBySkuQuery(sku)));
 
         public async Task<Product> GetProductsByCategoryAsync(string category)
         {

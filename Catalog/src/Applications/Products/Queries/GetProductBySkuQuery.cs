@@ -3,7 +3,7 @@ using MediatR;
  
 namespace Sigc.MktHub.Catalog.Core.Application.Products.Queries
 {
-    public class GetProductBySkuQuery : IRequest<Product>
+    public struct GetProductBySkuQuery : IRequest<Product>
     {
         public string Sku { get; set; }
  

@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using Core.Common.Models;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -20,10 +21,9 @@ namespace Catalog.Api.Controllers
         /// Retorna o identificador de transação ao qual a requisição HTTP atual pertence.
         /// </summary>
         /// <returns>Identificador da transação.</returns>
-        protected string GetTransactionId()
-        {
-            return HttpContext?.Request?.Headers[CatalogHttpHeaders.TransactionId];
-        }
+        protected string GetTransactionId() =>
+            HttpContext?.Request?.Headers[MicroServicesHttpHeaders.TransactionId];
+        
 
         /// <summary>
         /// Retorna o identificador do lote de operações ao qual a requisição HTTP atual pertence.
@@ -31,7 +31,7 @@ namespace Catalog.Api.Controllers
         /// <returns></returns>
         protected string GetBatchOperationId()
         {
-            return HttpContext?.Request?.Headers[CatalogHttpHeaders.BatchOperationId];
+            return HttpContext?.Request?.Headers[MicroServicesHttpHeaders.BatchOperationId];
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace Catalog.Api.Controllers
             return new Dictionary<string, string>
             {
                 {
-                    "X-Sigc-Header",
-                    HttpContext?.Request?.Headers[CatalogHttpHeaders.TransactionId]
+                    "X-MicroServices-Header",
+                    HttpContext?.Request?.Headers[MicroServicesHttpHeaders.TransactionId]
                 },
                 {SettingsHelper.BatchOperationIdKey, GetBatchOperationId()},
                 {SettingsHelper.TransactionIdKey, GetTransactionId()},
