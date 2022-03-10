@@ -28,18 +28,6 @@ namespace Core.Common.Extensions
             return services;
         }
 
-        //public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
-        //{
-        //    const string DISTRIBUTEDCACHE = "DistributedCache";
-
-        //    services.AddStackExchangeRedisCache(Options =>
-        //        {
-        //            Options.Configuration = configuration.GetValue<string>($"{DISTRIBUTEDCACHE}:ConnectionString");
-        //        });
-        //    return services;
-
-        //}
-
         public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
         {
             const string DISTRIBUTEDCACHE = "DistributedCache";
@@ -54,7 +42,6 @@ namespace Core.Common.Extensions
                 ro.ShortCacheTime = redisOptions.ShortCacheTime;
                 ro.IgnoreTimeoutException = redisOptions.IgnoreTimeoutException;
             });
-
             return services;
         }
 
