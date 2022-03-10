@@ -10,6 +10,8 @@ namespace Catalog.Api.Application.Mappings
         public RequestToCommandMappingProfile()
         {
             CreateMap<Request.Product, ProductCreateCommand>().ReverseMap();
+            CreateMap<Request.Product, ProductUpdateCommand>().ReverseMap();
+            CreateMap<Request.Product, ProductDeleteCommand>().ReverseMap();
             CreateMap<Request.Product, Domain.Product>().ReverseMap();
         }
     }

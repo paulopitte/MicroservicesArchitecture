@@ -137,9 +137,10 @@ namespace Catalog.Api.Controllers.V1
         public async Task<IActionResult> Update([FromBody] Request.Product request)
         {
             if (request is null)
-                return BadRequest("Invalid Product Request.");            
+                return BadRequest("Invalid Product Request.");
+            return !ModelState.IsValid ? JsonResult(ModelState) : JsonResult(await _productService.UpdateAsync(request, GetChannelId(), CreateHeaderDefault()));
 
-            return Ok(await _productService.UpdateAsync(request, GetChannelId(), CreateHeaderDefault()));
+            // return Ok(await _productService.UpdateAsync(request, GetChannelId(), CreateHeaderDefault()));
         }
 
 
@@ -166,7 +167,9 @@ namespace Catalog.Api.Controllers.V1
         {
             if (id is null)
                 return BadRequest("Invalid Product Request.");
-            return Ok(await _productService.DeleteAsync(id, GetChannelId(), CreateHeaderDefault()));
+            return !ModelState.IsValid ? JsonResult(ModelState) : JsonResult(await _productService.DeleteAsync(id, GetChannelId(), CreateHeaderDefault()));
+
+            // return Ok(await _productService.DeleteAsync(id, GetChannelId(), CreateHeaderDefault()));
         }
 
 

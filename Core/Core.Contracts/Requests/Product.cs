@@ -3,6 +3,7 @@
     public class Product
     {
 
+        public string? Id { get; set; }
 
         /// <summary>
 		/// SKU do produto  

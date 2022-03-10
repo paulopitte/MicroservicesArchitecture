@@ -6,6 +6,7 @@ namespace Catalog.Api.Domain
     {
         private const int UTC = -3;
 
+        protected Product() { }
         public Product(string sku, string title, decimal? price = 0M)
         {
             this.Id = Guid.NewGuid().ToString();
@@ -21,11 +22,15 @@ namespace Catalog.Api.Domain
         /// </summary>
         public static class Factory
         {
-            public static Product Create(string sku, string title, decimal? price = 0M, int? stock = 0)
+            public static Product Create(string id, string sku, string title, decimal? price = 0M, int? stock = 0)
             {
-                return new Product(sku, title, price)
+                return new Product
                 {
-                    Stock = stock
+                    Id = id,
+                    Sku = sku,
+                    Title = title,
+                    Price = price.GetValueOrDefault(),
+                    Stock = stock.GetValueOrDefault()
                 };
             }
         };
@@ -46,7 +51,7 @@ namespace Catalog.Api.Domain
         /// <summary>
         /// Representa um preço do produto
         /// </summary>
-        public decimal? Price { get; }
+        public decimal? Price { get; private set; }
 
         ///// <summary>
         ///// Descrição do produto.
@@ -80,7 +85,7 @@ namespace Catalog.Api.Domain
 
 
 
-        public string Category { get; set; }
+        public string Category { get; private set; }
 
 
 

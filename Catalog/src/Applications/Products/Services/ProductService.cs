@@ -11,8 +11,8 @@ namespace Catalog.Api.Core.Application.Products.Services
     public interface IProductService
     {
         Task<ValidationResult> SaveAsync(Request.Product request, int channelId, Dictionary<string, string> headers);
-        Task<ValidationResult> UpdateAsync(Request.Product request, int channelId, Dictionary<string, string> headers);
-        Task<ValidationResult> DeleteAsync(string sku, int channelId, Dictionary<string, string> headers);
+        Task<ValidationResult> UpdateAsync(Request.Product request, int channelId = 0, Dictionary<string, string> headers = null);
+        Task<ValidationResult> DeleteAsync(string id, int channelId, Dictionary<string, string> headers);
 
 
         Task<Request.Product> GetBySkuAsync(string sku, int channelId = 0);
@@ -67,42 +67,38 @@ namespace Catalog.Api.Core.Application.Products.Services
         public async Task<ValidationResult> UpdateAsync(Request.Product request, int channelId, Dictionary<string, string> headers)
         {
 
-            //var command = _mapper.Map<ProductUpdateCommand>(product);
-            //var validationResult = await _mediator.Send(command);
+            var command = _mapper.Map<ProductUpdateCommand>(request);
+            var validationResult = await _mediator.Send(command);
 
-            //if (validationResult.IsValid)
-            //{
-            //    //TODO:  PUBLIC QUEUE
+            if (validationResult.IsValid)
+            {
+                //TODO:  PUBLIC QUEUE
+
+                // REMOVE CACHE PARA NOVA PERSISTENCIA COM DADOS ATUALIZADOS
+              //  RemoveCacheKey(product.Sku, product.ChannelId);
+                _logger.LogInformation("Apply bussiness rule and save product.");
 
 
-            //    // REMOVE CACHE PARA NOVA PERSISTENCIA COM DADOS ATUALIZADOS
-            //    RemoveCacheKey(product.Sku, product.ChannelId);
-            //    _logger.LogInformation("Apply bussiness rule and save product.");
-
-
-            //}
-            //return validationResult;
-
-            return new ValidationResult();
+            }
+            return validationResult;
         }
 
 
-        public async Task<ValidationResult> DeleteAsync(string sku, int channelId, Dictionary<string, string> headers)
+        public async Task<ValidationResult> DeleteAsync(string id, int channelId = 0, Dictionary<string, string> headers = null)
         {
-            //var validationResult = await _mediator.Send(new ProductDeleteCommand(sku));
-            //if (validationResult.IsValid)
-            //{
-            //    //TODO:  PUBLIC QUEUE
+            var validationResult = await _mediator.Send(new ProductDeleteCommand() { Id = id});
+            if (validationResult.IsValid)
+            {
+                //TODO:  PUBLIC QUEUE / NOTIFICATION EVENTS ETC..
 
 
-            //    // REMOVE CACHE PARA NOVA PERSISTENCIA COM DADOS ATUALIZADOS
-            //    //  RemoveCacheKey(product.Sku, product.ChannelId);
-            //    _logger.LogInformation("Apply bussiness rule and save product.");
+                // REMOVE CACHE PARA NOVA PERSISTENCIA COM DADOS ATUALIZADOS
+                //  RemoveCacheKey(product.Sku, product.ChannelId);
+                _logger.LogInformation("Apply bussiness rule and delete product.");
 
 
-            //}
-            // return validationResult;
-            return new ValidationResult();
+            }
+            return validationResult;
         }
 
 

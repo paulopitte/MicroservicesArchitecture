@@ -6,9 +6,9 @@ namespace Catalog.Api.Applications.Products.Commands
     {
 
         /// <summary>
-        /// Identificador do produto no hub.
+        /// Identificador do produto no catalog.
         /// </summary>
-        public int Id { get; set; }   
+        public string Id { get; set; }   
 
 
         /// <summary>

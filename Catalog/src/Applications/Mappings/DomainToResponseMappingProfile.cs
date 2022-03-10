@@ -11,6 +11,8 @@ namespace Catalog.Api.Application.Mappings
         {
             CreateMap<Domain.Product, Request.Product>().ReverseMap();
             CreateMap<ProductCreateCommand, Request.Product>().ReverseMap();
+            CreateMap<ProductUpdateCommand, Request.Product>().ReverseMap();
+            CreateMap<ProductDeleteCommand, Request.Product>().ReverseMap();
 
         }
     }
