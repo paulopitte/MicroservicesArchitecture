@@ -1,8 +1,11 @@
 using Core.Common.Extensions;
+using Discount.Api.Repositories;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 
 builder.Services.AddOptions();
 builder.Services.AddControllers();
@@ -37,11 +40,9 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
 }
 
 // Segundo Passo:  Configuro do Pipeline de requisições:
-app.UseHttpsRedirection();
 app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } });
 app.UseAuthorization();
 app.UseHealthChecks("/status");
