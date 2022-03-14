@@ -17,7 +17,7 @@ services:
     image: ${DOCKER_REGISTRY-}basketapi
     build:
       context: .
-      dockerfile: Basket/Basket.Api/Dockerfile
+      dockerfile: Basket/src/Dockerfile
 volumes:
   mongo_data:
 

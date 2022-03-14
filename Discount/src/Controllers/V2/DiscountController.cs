@@ -1,10 +1,10 @@
-﻿using Core.Common.Models;
+﻿using Core.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
-namespace Discount.Api.Controllers.V1
+namespace Discount.Api.Controllers.V2
 {
-    [ApiVersion("1")]
+    [ApiVersion("2")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ProducesResponseType(typeof(MessageErrorBase), 400)]
     [ProducesResponseType(typeof(MessageErrorBase), 500)]
@@ -14,7 +14,7 @@ namespace Discount.Api.Controllers.V1
     public class DiscountController : ControllerBase
     {
 
-        [MapToApiVersion("1.0")]
+        [MapToApiVersion("2.0")]
         [HttpGet("{sku}/has-discount")]
         public IActionResult Index()
         {
