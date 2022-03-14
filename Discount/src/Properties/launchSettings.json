@@ -9,23 +9,27 @@
     }
   },
   "profiles": {
-    "Discount.Api": {
+    "Kestrel (Development)": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5126",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "APPLICATION_NAME": "Discount"
+      },
+      "applicationUrl": "http://localhost:7000",
+      "dotnetRunMessages": "true"
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "Kestrel (Local)": {
+      "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "APPLICATION_NAME": "Discount"
+      },
+      "applicationUrl": "http://localhost:7000",
+      "dotnetRunMessages": "true"
     }
   }
 }

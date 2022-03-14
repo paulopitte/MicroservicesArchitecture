@@ -1,10 +1,10 @@
 ﻿using Basket.Api.Entities;
 using Basket.Api.Repositories;
-using Core.Common.Models;
+using Core.Contracts.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
-namespace Basket.Api.Controllers
+namespace Basket.Api.Controllers.V1
 {
 
     [ApiVersion("1")]
