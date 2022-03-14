@@ -5,7 +5,7 @@
 	  <Description>
 		  Provides the necessary services by consuming the basket information available through the microservices.
 		  Commonly used types:
-		  basket.Api
+		  Basket.Api
 		  Core.Common
 		  Core.Contracts
 	  </Description>
