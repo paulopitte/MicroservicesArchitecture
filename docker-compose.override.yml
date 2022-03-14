@@ -26,7 +26,7 @@ services:
     depends_on:
       - catalogdb
     ports:
-      - "8000:80"      
+      - "1000:80"      
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -40,4 +40,4 @@ services:
     depends_on:
       - basketdb
     ports:
-      - "5000:80"
+      - "2000:80"

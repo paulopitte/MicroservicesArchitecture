@@ -18,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:8000"
+      "applicationUrl": "http://localhost:1000"
     },
     "Kestrel (Local)": {
       "commandName": "Project",
@@ -29,7 +29,7 @@
         "ASPNETCORE_ENVIRONMENT": "Local"
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:8000"
+      "applicationUrl": "http://localhost:1000"
     },
     "Kestrel (Production)": {
       "commandName": "Project",
@@ -39,7 +39,7 @@
         "APPLICATION_NAME": "Catalog",
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "http://localhost:8000"
+      "applicationUrl": "http://localhost:1000"
     },
     "Kestrel (Staging / QA)": {
       "commandName": "Project",
@@ -49,7 +49,7 @@
         "APPLICATION_NAME": "Catalog",
         "ASPNETCORE_ENVIRONMENT": "Staging"
       },
-      "applicationUrl": "http://localhost:8000"
+      "applicationUrl": "http://localhost:1000"
     },
 
 
