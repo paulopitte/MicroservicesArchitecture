@@ -1,16 +1,19 @@
 ﻿using Basket.Api.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 using Sigc.Core.Caching.Core;
-using Sigc.Core.Caching.Shared.Catalog;
+
 using System.Text.Json;
 
 namespace Basket.Api.Repositories
 {
     public class BasketRepository : IBasketRepository
     {
-        //private readonly IStaticCacheManager _staticCacheManager;
+        private readonly IStaticCacheManager _staticCacheManager;
 
-        // private readonly ILogger<BasketRepository> _logger;
+       
+        private readonly ILogger<BasketRepository> _logger;
+        private readonly IDistributedCache _redisCache;
+
         // public BasketRepository(
         //                         IStaticCacheManager staticCacheManager, 
         //                         ILogger<BasketRepository> logger)
@@ -25,31 +28,33 @@ namespace Basket.Api.Repositories
 
 
 
-        private readonly IDistributedCache _redisCache;
 
-        public BasketRepository(IDistributedCache redisCache)
+        public BasketRepository(IDistributedCache redisCache, ILogger<BasketRepository> logger)
         {
             _redisCache = redisCache ?? throw new ArgumentNullException(nameof(redisCache));
+            _logger = logger ?? throw new ArgumentException(null, nameof(logger));
+
         }
 
         public async Task DeleteBasket(string userName)
         {
-          await _redisCache.RemoveAsync(userName);
+            await _redisCache.RemoveAsync(userName);
         }
 
         public async Task<ShoppingCart> GetBasket(string userName)
         {
+            _logger.LogInformation("Obtendo chave Redis...");
             var basket = await _redisCache.GetAsync(userName);
             if (basket is null) return null;
-
 
             return JsonSerializer.Deserialize<ShoppingCart>(basket);
         }
 
         public async Task<ShoppingCart> UpdateBasket(ShoppingCart basket)
         {
-            await _redisCache.SetStringAsync(basket.UserName, JsonSerializer.Serialize(basket));
+            _logger.LogInformation("Inserindo chave Redis...");
 
+            await _redisCache.SetStringAsync(basket.UserName, JsonSerializer.Serialize(basket));
             return await GetBasket(basket.UserName);
 
         }

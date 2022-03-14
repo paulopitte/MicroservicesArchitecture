@@ -19,7 +19,7 @@ var supportedCultures = new[] { brazilianPortuguese };
 #endregion
 
 builder.Services.AddApplicationEvents();
-builder.Services.AddLogging(builder.Configuration);
+//builder.Services.AddLogging(builder.Configuration);
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 builder.Services.AddCorsAPI(CorsPolicyName);
 builder.Services.AddBusinessServices(builder.Configuration);
