@@ -1,6 +1,6 @@
 ﻿namespace Basket.Api.Entities
 {
-    public struct ShoppingCart
+    public class ShoppingCart
     {
 
         public ShoppingCart() { }
@@ -14,17 +14,18 @@
 
         public List<ShoppingCartItem> Items { get; set; } = new();
 
+        public decimal TotalPrice { get; set; }
 
-        public decimal TotalPrice
-        {
-            get
-            {
-                decimal totalprice = 0;
-                foreach (var item in Items)
-                    totalprice += item.Price * item.Quantity;
+        //public decimal TotalPrice
+        //{
+        //    get
+        //    {
+        //        //decimal totalprice = 0;
+        //        //foreach (var item in Items)
+        //        //    totalprice += item.Price * item.Quantity;
 
-                return TotalPrice;
-            }
-        }
+        //        return TotalPrice;
+        //    }
+        //}
     }
 }

@@ -1,18 +1,19 @@
-﻿ 
+﻿using Basket.Api.Repositories;
 using Core.Common.Extensions;
-using Core.Common.Models;
-using MediatR;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Options;
 using System.IO.Compression;
 
 namespace Basket.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+
+
+
         public static IServiceCollection AddBusinessServices(this IServiceCollection services, IConfiguration configuration)
         {
-          
+            services.AddScoped<IBasketRepository, BasketRepository>();
+
             return services;
         }
 
@@ -29,11 +30,19 @@ namespace Basket.Api.Extensions
             services.AddMvc(); // ==>  Necessario para uso da Interface IDistributedCache
 
 
+
+
+            services.AddApplicationEvents();
             services.AddApiVersioningConfig();
             services.AddJwtconfig(configuration, null);
             services.AddSwaggerConfig();
-            services.AddCaching(configuration);
+            //  services.AddCaching(configuration);
 
+
+            services.AddStackExchangeRedisCache(op =>
+            {
+                op.Configuration = configuration.GetValue<string>("DistributedCache:ConnectionString");
+            });
 
             // HABILITA O MODULO DE COMPACTAÇÃO PARA RESPONSE HTTP
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
@@ -55,8 +64,8 @@ namespace Basket.Api.Extensions
                 options.AddPolicy(corsPolicyName,
                     builder => builder
                         .WithOrigins(
-                            "http://localhost:60414",
-                            "https://localhost:60414",
+                            "http://localhost:5063",
+                            "https://localhost:5063",
                             "https://localhost:8080")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
