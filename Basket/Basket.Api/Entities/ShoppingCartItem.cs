@@ -2,8 +2,8 @@
 {
     public class ShoppingCartItem
     {
-        public int Quantity { get; internal set; }
-        public decimal Price { get; internal set; }
+        public int Quantity { get; set; } = 0;
+        public decimal Price { get; set; } = decimal.Zero;
 
         public string? ProductId { get; set; }
 

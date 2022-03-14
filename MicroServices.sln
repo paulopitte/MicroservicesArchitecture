@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{0D7711D4-9
 		..\..\..\PROJETOS\SIGC\repos\Sigc.MktHub.Catalog\readme.md = ..\..\..\PROJETOS\SIGC\repos\Sigc.MktHub.Catalog\readme.md
 	EndProjectSection
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6E9A7934-9CA5-46F4-8082-80D5DF613234}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{68ADC9B0-6355-4FDE-8F2E-9B92B00B6A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68ADC9B0-6355-4FDE-8F2E-9B92B00B6A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68ADC9B0-6355-4FDE-8F2E-9B92B00B6A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E9A7934-9CA5-46F4-8082-80D5DF613234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E9A7934-9CA5-46F4-8082-80D5DF613234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E9A7934-9CA5-46F4-8082-80D5DF613234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E9A7934-9CA5-46F4-8082-80D5DF613234}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

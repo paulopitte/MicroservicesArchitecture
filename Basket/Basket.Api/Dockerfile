@@ -3,22 +3,21 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Catalog/src/Catalog.Api.csproj", "Catalog/src/"]
+COPY ["Basket/Basket.Api/Basket.Api.csproj", "Basket/Basket.Api/"]
 COPY ["Core/Core.Common/Core.Common.csproj", "Core/Core.Common/"]
 COPY ["Core/Core.Contracts/Core.Contracts.csproj", "Core/Core.Contracts/"]
-RUN dotnet restore "Catalog/src/Catalog.Api.csproj"
+RUN dotnet restore "Basket/Basket.Api/Basket.Api.csproj"
 COPY . .
-WORKDIR "/src/Catalog/src"
-RUN dotnet build "Catalog.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/Basket/Basket.Api"
+RUN dotnet build "Basket.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Catalog.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "Basket.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Catalog.Api.dll"]
+ENTRYPOINT ["dotnet", "Basket.Api.dll"]
